@@ -1,8 +1,7 @@
 <?php
   include( "includes/header.php" );
-?>
-<?php
-  $register = @$_POST['register'];
+error_reporting(E_ALL); ini_set('display_errors', '1');
+  $register = isset($_POST['register']);
   //declaring variables needed for the registration form to prevent errors
   $fname = "";
   $lname = "";
@@ -14,30 +13,28 @@
   $signup_date = "";
   $username_check = ""; // check if username exists
   //assigning variables from the registration form
-  $fname = strip_tags(@$_POST['fname']);
-  $lname = strip_tags(@$_POST['lname']);
-  $uname = strip_tags(@$_POST['uname']);
-  $email = strip_tags(@$_POST['email']);
-  $email2 = strip_tags(@$_POST['email2']);
-  $password = strip_tags(@$_POST['password']);
-  $password2 = strip_tags(@$_POST['password2']);
+  $fname = mysqli_real_escape_string($db, isset($_POST["fname"]));
+  $lname = mysqli_real_escape_string($db, isset($_POST["lname"]));
+  $uname = mysqli_real_escape_string($db, isset($_POST["uname"]));
+  $email = mysqli_real_escape_string($db, isset($_POST["email"]));
+  $email2 = mysqli_real_escape_string($db, isset($_POST["email2"]));
+  $password = mysqli_real_escape_string($db, isset($_POST["password"]));
+  $password2 = mysqli_real_escape_string($db, isset($_POST["password2"]));
   $signup_date = date("Y-m-d");
 
   if ($register) {
     if ($email == $email2) {
-      $username_check = mysqli_query('SELECT username FROM users WHERE username = "$uname"';
-      $row = mysql_num_rows($username_check);
+      $username_check = mysqli_query($db, "SELECT username FROM users WHERE username = '$uname'");
+      $row = mysqli_num_rows($username_check);
       if ($row == 0) {
-        if (isset($fname&&$lname&&$uname&&$email&&$email2&&$password&&$password2)) {
+        if ($fname&&$lname&&$uname&&$email&&$email2&&$password&&$password2) {
           if ($password == $password2) {
-            if (strlen($username)>25||strlen($fname)>25||strlen(lname)>25) {
+            if (strlen($uname)>25||strlen($fname)>25||strlen($lname)>25) {
               echo "The maximum limit for username/first name/ last name is 25 characters!";
-            } elseif (strlen($password)>30||strlen($password)<5) {
-                echo "Your password must be between 5 and 30 characters long!";
             } else {
-              $password = password_hash($password)
-              $password2 = password_hash($password2)
-              $query = mysqli_query('INSERT INTO users VALUES ("","$uname","$fname","$lname","$email","$password","$signup_date","0")');
+              $password = password_hash($password, PASSWORD_DEFAULT);
+              $password2 = password_hash($password2, PASSWORD_DEFAULT);
+              $query = mysqli_query($db, "INSERT INTO users VALUES ('','$uname','$fname','$lname','$email','$password','$signup_date','0')");
               die("<h2>Welcome to HackerBits</h2>Login to your account to get started . . . ");
             }
           } else {
