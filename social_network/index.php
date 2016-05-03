@@ -1,18 +1,13 @@
 <?php
-  include( "includes/header.php" );
-error_reporting(E_ALL); ini_set('display_errors', '1');
+  error_reporting(E_ALL); ini_set('display_errors', '1');
+
+  if (!$register) {
+    goto RENDER;
+  }
+
   $register = isset($_POST['register']);
-  //declaring variables needed for the registration form to prevent errors
-  $fname = "";
-  $lname = "";
-  $uname = "";
-  $email = "";
-  $email2 = "";
-  $password = "";
-  $password2 = "";
-  $signup_date = "";
-  $username_check = ""; // check if username exists
-  //assigning variables from the registration form
+
+  //assigning variables for the registration form
   $fname = mysqli_real_escape_string($db, isset($_POST["fname"]));
   $lname = mysqli_real_escape_string($db, isset($_POST["lname"]));
   $uname = mysqli_real_escape_string($db, isset($_POST["uname"]));
@@ -33,7 +28,6 @@ error_reporting(E_ALL); ini_set('display_errors', '1');
               echo "The maximum limit for username/first name/ last name is 25 characters!";
             } else {
               $password = password_hash($password, PASSWORD_DEFAULT);
-              $password2 = password_hash($password2, PASSWORD_DEFAULT);
               $query = mysqli_query($db, "INSERT INTO users VALUES ('','$uname','$fname','$lname','$email','$password','$signup_date','0')");
               die("<h2>Welcome to HackerBits</h2>Login to your account to get started . . . ");
             }
@@ -50,29 +44,9 @@ error_reporting(E_ALL); ini_set('display_errors', '1');
       echo "Your emails don't match!";
     }
   }
-?>
-  <div class="main_table">
-    <table>
-      <tr>
-        <td width="60%" valign="top">
-          <h2>Join HackerBits Today!</h2>
-        </td>
-        <td width="40%" valign="top">
-          <h2>Sign Up Below!</h2><br />
-          <form action="#" method="post">
-            <input type="text" name="fname" size="25" placeholder="First Name"> <br /><br />
-            <input type="text" name="lname" size="25" placeholder="Last Name"><br /><br />
-            <input type="text" name="uname" size="25" placeholder="Username"><br /><br />
-            <input type="text" name="email" size="25" placeholder="Email"><br /><br />
-            <input type="text" name="email2" size="25" placeholder="Confirm Email"><br /><br />
-            <input type="text" name="password" size="25" placeholder="Password"><br /><br />
-            <input type="text" name="password2" size="25" placeholder="Confirm Password"><br /><br />
-            <input type="submit" name="register" value="Sign Up!"><br />
-          </form>
-        </td>
-      </tr>
-    </table>
-  </div>
-  <?php
+
+  RENDER:
+    include( "includes/header.php" );
+    include( "includes/body.php" );
     include( "includes/footer.php" );
   ?>

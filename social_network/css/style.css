@@ -2,7 +2,6 @@
   margin: 0px;
   padding: 0px;
   font-family: Helvetica, Arial, sans-serif;
-  font-size: 12px;
   background-color: #ecf0f1;
 
 }
@@ -154,11 +153,21 @@ table input[type="text"]:focus {
 
 .main_table {
   display: flex;
-  height: calc(100vh - 43px);
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  height: calc(100vh - 43px);
 }
+
+.main_table td:first-child {
+  text-align: center;
+}
+
+.main_table td {
+  padding: 20px;
+  width: 400px;
+}
+
 
 input[type="submit"] {
   background-color: #2ecc71;
