@@ -1,3 +1,3 @@
 <?php
-      $db = mysqli_connect('localhost', 'root', 'Anim8ors', 'users_table');
+      $db = mysqli_connect('localhost', 'root', 'REMOVED', 'users_table');
 ?>
